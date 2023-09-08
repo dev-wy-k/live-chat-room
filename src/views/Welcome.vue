@@ -1,6 +1,6 @@
 <template>
   <div class="welcome container">
-    <p>Welcome To Chat Room</p>
+    <p>Welcome To Chat Room One</p>
   </div>
 </template>
 
