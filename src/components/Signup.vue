@@ -4,14 +4,15 @@
     <input type="text" placeholder="display name" v-model="displayName" />
     <input type="email" placeholder="email" v-model="email" />
     <input type="password" placeholder="password" v-model="password" />
+    <div v-if="error" class="error">
+        {{ error }}
+    </div>
     <button>Sign Up</button>
   </form>
 </template>
 
 <script>
 import { ref } from "vue";
-import { auth, createUserWithEmailAndPassword } from "@/firebase/config";
-import { updateProfile } from "firebase/auth";
 import useSignup from "../composables/useSignup";
 
 export default {
@@ -22,10 +23,16 @@ export default {
 
     let { error, createAccount } = useSignup();
     let signUp = async () => {
-       let res = await createAccount(email.value,password.value,displayName.value);
-       console.log(res)
+      let res = await createAccount(
+        email.value,
+        password.value,
+        displayName.value
+      );
+      if (res) {
+        console.log(res);
+      } 
     };
-    return { displayName, email, password, signUp };
+    return { displayName, email, password, signUp ,error};
   },
 };
 </script>
