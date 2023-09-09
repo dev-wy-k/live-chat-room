@@ -12,20 +12,22 @@
 import { ref } from "vue";
 import getUser from "@/composables/getUser";
 import { serverTimestamp } from "firebase/firestore/lite";
+import useCollection from "../composables/useCollection";
 export default {
   setup() {
     let message = ref("");
 
-    let {user} = getUser();
-    let handleSubmit = () => {
-        let chat = {
-            message:message.value,
-            name:user.value.displayName,
-            created_at:serverTimestamp()
-        }
-        console.log(chat);
-        message.value = "";
-    }
+    let { user } = getUser();
+    let { error, saveDoc } = useCollection("messages");
+    let handleSubmit = async () => {
+      let chat = {
+        message: message.value,
+        name: user.value.displayName,
+        created_at: serverTimestamp(),
+      };
+      await saveDoc(chat);
+      message.value = "";
+    };
 
     return { message, handleSubmit };
   },
@@ -33,18 +35,18 @@ export default {
 </script>
 
 <style>
-form{
-    margin: 10px;
+form {
+  margin: 10px;
 }
-textarea{
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 6px;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 0;
-    border-radius: 20px;
-    font-family: inherit;
-    outline: none;
+textarea {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 6px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 20px;
+  font-family: inherit;
+  outline: none;
 }
 </style>
