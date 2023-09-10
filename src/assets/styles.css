@@ -16,10 +16,40 @@ body {
   }
   button {
     text-decoration: none;
-    background: #5ae4ca;
+    background: #305dd0;
     color: white;
     font-weight: bold;
     border: 0;
     border-radius: 20px;
     padding: 10px 20px;
+  }
+  button:hover{
+    background: #12399c;
+  }
+  .pointer{
+    cursor: pointer;
+  }
+  .rgb-color{
+    color: #12399c;
+    font-weight: bold;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #6887e3; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b30000; 
   }

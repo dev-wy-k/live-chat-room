@@ -1,5 +1,5 @@
 <template>
-  <h2>Sign Up</h2>
+  <h2>Register You Account</h2>
   <form @submit.prevent="signUp">
     <input type="text" placeholder="display name" v-model="displayName" />
     <input type="email" placeholder="email" v-model="email" />
@@ -7,7 +7,7 @@
     <div v-if="error" class="error">
         {{ error }}
     </div>
-    <button>Sign Up</button>
+    <button class="pointer">Sign Up</button>
   </form>
 </template>
 

@@ -1,12 +1,12 @@
 <template>
-  <h2>Login</h2>
+  <h2>Welcome To Chatting App</h2>
   <form @submit.prevent="login">
     <input type="email" placeholder="email" v-model="email" />
     <input type="password" placeholder="password" v-model="password" />
     <div class="error" v-if="error">
         {{ error }}
     </div>
-    <button>Welcome To Chatting App</button>
+    <button class="pointer">Login</button>
   </form>
 </template>
 

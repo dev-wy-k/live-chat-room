@@ -1,10 +1,19 @@
 <template>
-  <form>
-    <textarea
+  <form class="custom-container">
+    <input
+      class="custom-input"
       placeholder="text message and hit enter to send"
       v-model="message"
-      @keypress.enter="handleSubmit"
-    ></textarea>
+      @keypress.enter.prevent="handleSubmit"
+    />
+    <img
+      class="image pointer"
+      src="../../public/send.png"
+      width="20"
+      height="20"
+      alt=""
+      @click="handleSubmit"
+    />
   </form>
 </template>
 
@@ -34,19 +43,29 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 form {
-  margin: 10px;
+  margin: 10px 20px;
 }
-textarea {
+.custom-input {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 6px;
+  margin-bottom: 15px;
   padding: 10px;
   box-sizing: border-box;
   border: 0;
   border-radius: 20px;
   font-family: inherit;
+  background-color: rgb(229, 229, 229);
   outline: none;
+  height: 50px;
+}
+.custom-container {
+  position: relative;
+}
+.image {
+  position: absolute;
+  right: 15px;
+  top: 15px;
 }
 </style>
