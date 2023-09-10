@@ -6,7 +6,7 @@
     <div class="error" v-if="error">
         {{ error }}
     </div>
-    <button>Login</button>
+    <button>Welcome To Chatting App</button>
   </form>
 </template>
 
