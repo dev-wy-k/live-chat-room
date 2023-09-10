@@ -2,9 +2,9 @@
   <div class="chat-window">
     <div class="messages" v-for="message in messages" :key="message.id">
       <div class="single">
-        <span class="created-at">{{message.created_at}}</span>
-        <span class="name">{{message.name}}</span>
-        <span class="message">{{message.message}}</span>
+        <span class="created-at">{{ message.created_at.toDate() }}</span>
+        <span class="name">{{ message.name }}</span>
+        <span class="message">{{ message.message }}</span>
       </div>
     </div>
   </div>
@@ -13,7 +13,7 @@
 <script>
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "@/firebase/config";
-import { ref } from 'vue';
+import { ref } from "vue";
 
 export default {
   setup() {
@@ -24,12 +24,14 @@ export default {
       if (docs) {
         docs.forEach((doc) => {
           let document = { id: doc.id, ...doc.data() };
-          results.push(document);
+          if (doc.data().created_at) {
+            results.push(document);
+          }
         });
       }
       messages.value = results;
     });
-    return {messages}
+    return { messages };
   },
 };
 </script>
