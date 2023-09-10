@@ -11,7 +11,7 @@
 <script>
 import { ref } from "vue";
 import getUser from "@/composables/getUser";
-import { serverTimestamp } from "firebase/firestore/lite";
+import { serverTimestamp } from "firebase/firestore";
 import useCollection from "../composables/useCollection";
 export default {
   setup() {

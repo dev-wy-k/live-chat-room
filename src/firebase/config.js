@@ -1,6 +1,6 @@
 import {initializeApp} from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 const firebaseConfig = {
     apiKey: "AIzaSyCaEaV8RPHvhk8vV2OG3K7jdu1xwUcMxk8",
     authDomain: "live-chat-app-e6eae.firebaseapp.com",

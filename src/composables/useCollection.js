@@ -1,5 +1,5 @@
 import { db } from "@/firebase/config";
-import { addDoc, collection } from "firebase/firestore/lite";
+import { addDoc, collection } from "firebase/firestore";
 import { ref } from "vue";
 
 let useCollection = (collectionName) => {
