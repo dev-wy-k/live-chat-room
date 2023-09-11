@@ -1,6 +1,7 @@
 import {initializeApp} from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from "firebase/storage";
 const firebaseConfig = {
     apiKey: "AIzaSyCaEaV8RPHvhk8vV2OG3K7jdu1xwUcMxk8",
     authDomain: "live-chat-app-e6eae.firebaseapp.com",
@@ -13,7 +14,8 @@ const firebaseConfig = {
 let app = initializeApp(firebaseConfig);
 let db=getFirestore(app);
 let auth=getAuth();
+const storage = getStorage();
 
 
 // let timestamp = firebase.firestore.FieldValue.serverTimeStamp;
-export {db,auth,createUserWithEmailAndPassword};
+export {db,auth,createUserWithEmailAndPassword, storage};

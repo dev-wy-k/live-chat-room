@@ -27,7 +27,7 @@ export default {
     let message = ref("");
 
     let { user } = getUser();
-    let { error, saveDoc } = useCollection("messages");
+    let { error, saveDoc, setNewDoc } = useCollection("messages");
     let handleSubmit = async () => {
       let chat = {
         message: message.value,

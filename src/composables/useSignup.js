@@ -1,15 +1,19 @@
 import { ref } from "vue";
 import { auth, createUserWithEmailAndPassword } from "@/firebase/config";
 import { updateProfile } from "firebase/auth";
+import useCollection from "./useCollection";
 
 let error = ref("");
-let createAccount = async (email, password, displayName) => {
+let {err ,saveDoc, setUser} = useCollection("users");
+let createAccount = async (email, password, displayName, url) => {
   try {
     let res = await createUserWithEmailAndPassword(auth, email, password);
     if (!res) {
       throw new Error("could not create new user");
     }
-    await updateProfile(auth.currentUser, { displayName });
+    await updateProfile(auth.currentUser, { displayName,photoURL:url.url }); // update auth user data
+    await setUser(res.user.uid,displayName) // add user name to user collection firestore database
+
     return res;
   } catch (err) {
     error.value = err.message;

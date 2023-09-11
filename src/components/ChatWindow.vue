@@ -52,7 +52,7 @@ export default {
 <style>
 .chat-window {
   background: #fafafa;
-  padding: 30px 20px;
+  padding: 10px 25px;
 }
 .single {
   margin: 18px 0;
@@ -68,7 +68,7 @@ export default {
   margin-right: 6px;
 }
 .messages {
-  max-height: 400px;
+  max-height: 70vh;
   overflow: auto;
 }
 </style>
