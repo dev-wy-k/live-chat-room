@@ -5,13 +5,18 @@
   </div>
   <div class="popup" v-if="privateChatModal || groupChatModal">
     <div class="modal-content">
-      <h2 class="text-center">{{ privateChatModal ? "New Chat" : "New Group Chat" }}</h2>
+      <h2 class="text-center">
+        {{ privateChatModal ? "New Chat" : "New Group Chat" }}
+      </h2>
       <div class="users">
-        <div class="single-user">
+        <div class="single-user" v-for="user in users" :key="user.id">
           <div>
-            <img src="../../public/user.png" alt="" width="40" height="40" />
+            <img :src="user.photo_url" alt="" width="40" height="40" />
           </div>
-          <div class="user-name"><p>phyoe wai aung</p></div>
+          <div class="user-name">
+            <p>{{ user.user_name }}</p>
+            {{ allUsers }}
+          </div>
         </div>
       </div>
       <div class="text-center">
@@ -22,11 +27,13 @@
 </template>
 
 <script>
+import getUsers from "@/composables/getUsers";
 import { ref } from "vue";
 export default {
   setup() {
     let privateChatModal = ref(false);
     let groupChatModal = ref(false);
+    let {users} = getUsers();
 
     let privateModalClick = () => {
       privateChatModal.value = true;
@@ -43,13 +50,19 @@ export default {
       groupChatModal.value = false;
     };
 
-    return { privateChatModal, groupChatModal, privateModalClick,groupChatModalClick, closeModal };
+    return {
+      privateChatModal,
+      groupChatModal,
+      privateModalClick,
+      groupChatModalClick,
+      closeModal,
+      users,
+    };
   },
 };
 </script>
 
 <style scoped>
-
 h2 {
   padding-bottom: 10px;
   border-bottom: 1px solid #b5b0b0;
@@ -91,12 +104,12 @@ button:hover {
   border-radius: 10px;
   padding: 10px 20px;
 }
-.single-user{
+.single-user {
   display: flex;
   border-bottom: 1px solid #eee;
   padding: 5px 0;
 }
-.user-name{
+.user-name {
   margin-left: 10px;
   font-weight: bold;
 }

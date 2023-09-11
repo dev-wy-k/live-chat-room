@@ -1,4 +1,5 @@
 <template>
+  <Loading></Loading>
   <div class="chat-container">
       <div class="sidebar">
         <LeftSideNavbar></LeftSideNavbar>
@@ -13,6 +14,7 @@
 </template>
 
 <script>
+import Loading from '../components/Loading'
 import PrivateChat from '../components/PrivateChat'
 import LeftSideNavbar from '../components/LeftSideNavbar'
 import ChatWindow from "../components/ChatWindow";
@@ -23,6 +25,7 @@ import getUser from "@/composables/getUser";
 import { useRouter } from "vue-router";
 export default {
   components: {
+    Loading,
     PrivateChat,
     LeftSideNavbar,
     ChatWindow,

@@ -12,10 +12,12 @@ let useCollection = (collectionName) => {
             error.value = "Server Error Please Contact With Developer!";
         }
     }
-    let setUser = async(userId, name) => {
+    let setUser = async(userId, user_name, photo_url) => {
+        let data = {user_name,photo_url};
+        console.log(data)
         try{
             const docRef = doc(collection(db, collectionName), userId);
-            await setDoc(docRef, {user_name:name});
+            await setDoc(docRef, data);
         }catch(err){
             console.log(err.message);
             error.value = "Server Error Please Contact With Developer!";

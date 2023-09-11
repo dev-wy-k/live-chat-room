@@ -12,7 +12,7 @@ let createAccount = async (email, password, displayName, url) => {
       throw new Error("could not create new user");
     }
     await updateProfile(auth.currentUser, { displayName,photoURL:url.url }); // update auth user data
-    await setUser(res.user.uid,displayName) // add user name to user collection firestore database
+    await setUser(res.user.uid,displayName,url.url) // add user name to user collection firestore database
 
     return res;
   } catch (err) {
