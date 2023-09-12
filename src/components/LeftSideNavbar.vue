@@ -8,10 +8,10 @@
   </template>
   
   <script>
-  import getUser from "../composables/getUser";
+  import getLoginUser from "../composables/getLoginUser";
   export default {
     setup() {
-      let {user} = getUser();
+      let {user} = getLoginUser();
     
       return { user };
     },
@@ -19,4 +19,4 @@
   </script>
   
   <style></style>
-  
+  ../composables/getLoginUser

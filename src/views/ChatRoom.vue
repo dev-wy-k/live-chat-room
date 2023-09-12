@@ -1,30 +1,42 @@
 <template>
-  <Loading :isLoading="isLoading"/>
+  <Loading :isLoading="isLoading" />
   <div class="chat-container">
-      <div class="sidebar">
-        <LeftSideNavbar></LeftSideNavbar>
-        <PrivateChat></PrivateChat>
-      </div>
-      <div class="output">
-        <Navbar></Navbar>
-        <ChatWindow @chatWindow="chatWindow"></ChatWindow>
-        <NewChatForm></NewChatForm>
+    <div class="sidebar">
+      <LeftSideNavbar></LeftSideNavbar>
+      <PrivateChat @addNewChat="addNewChat"></PrivateChat>
+      <ChatList @addNewChat="addNewChat" :senderId="senderId"></ChatList>
+    </div>
+    <div class="output">
+      <Navbar :chatPersonData="chatPersonData"></Navbar>
+      <ChatWindow
+        @chatWindow="chatWindow"
+        :senderId="senderId"
+        :receiverId="receiverId"
+      ></ChatWindow>
+      <NewChatForm
+        :senderId="senderId"
+        :senderName="senderName"
+        :receiverName="receiverName"
+        :receiverId="receiverId"
+      ></NewChatForm>
     </div>
   </div>
 </template>
 
 <script>
-import Loading from '../components/Loading'
-import PrivateChat from '../components/PrivateChat'
-import LeftSideNavbar from '../components/LeftSideNavbar'
+import ChatList from '../components/ChatList'
+import Loading from "../components/Loading";
+import PrivateChat from "../components/PrivateChat";
+import LeftSideNavbar from "../components/LeftSideNavbar";
 import ChatWindow from "../components/ChatWindow";
 import NewChatForm from "../components/NewChatForm";
 import { ref, watch } from "vue";
 import Navbar from "../components/navbar";
-import getUser from "@/composables/getUser";
+import getLoginUser from "@/composables/getLoginUser";
 import { useRouter } from "vue-router";
 export default {
   components: {
+    ChatList,
     Loading,
     PrivateChat,
     LeftSideNavbar,
@@ -33,9 +45,14 @@ export default {
     Navbar,
   },
   setup() {
-    let { user } = getUser();
+    let { user } = getLoginUser();
     let router = useRouter();
     let isLoading = ref(true);
+    let chatPersonData = ref(null); // chat person
+    let senderId = ref(""); // message sender
+    let receiverId = ref(""); // message receiver
+    let senderName = ref(""); // sender name
+    let receiverName = ref(""); //receiver name
     watch(user, () => {
       if (!user.value) {
         router.push({ name: "Welcome" });
@@ -44,8 +61,26 @@ export default {
 
     let chatWindow = (chatWindowLoading) => {
       isLoading.value = chatWindowLoading;
-    }
-    return {chatWindow, isLoading};
+    };
+
+    // get chat person data from private chat view
+    let addNewChat = (data) => {
+      chatPersonData.value = data;
+      senderId.value = user.value.uid;
+      senderName.value = user.value.displayName;
+      receiverId.value = data.id;
+      receiverName.value = data.user_name;
+    };
+    return {
+      chatWindow,
+      isLoading,
+      addNewChat,
+      chatPersonData,
+      senderId,
+      receiverId,
+      senderName,
+      receiverName,
+    };
   },
 };
 </script>
@@ -84,3 +119,4 @@ nav p.email {
   color: #999;
 }
 </style>
+@/composables/getLoginUser

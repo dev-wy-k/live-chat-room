@@ -1,28 +1,32 @@
 <template>
   <nav v-if="user">
     <div>
-      <p><span class="rgb-color">{{ user.displayName }}</span></p>
-      <p class="email">logged in as {{ user.email }}</p>
+      <p>
+        <span class="rgb-color">{{ user.user_name }}</span>
+      </p>
+      <p class="email">logged in as {{ user.id }}</p>
     </div>
     <button @click="userLogout" class="pointer">Logout</button>
   </nav>
 </template>
 
 <script>
+import { computed } from "vue";
 import useLogout from "../composables/useLogout";
-import getUser from "../composables/getUser";
 export default {
-  setup() {
+  props: ['chatPersonData'],
+  setup(props) {
+    let user = computed(() => props.chatPersonData);;
     let { error, logout } = useLogout();
-    let {user} = getUser();
-    
+
     let userLogout = async () => {
       await logout();
     };
 
-    return { userLogout, error, user };
+    return { userLogout, error , user };
   },
 };
 </script>
 
 <style></style>
+../composables/getLoginUser

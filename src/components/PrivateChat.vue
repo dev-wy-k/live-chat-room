@@ -9,9 +9,10 @@
         {{ privateChatModal ? "New Chat" : "New Group Chat" }}
       </h2>
       <div class="users">
-        <div class="single-user" v-for="user in users" :key="user.id">
+        <div class="single-user" @click="addNewChat(e,user)" v-for="user in users" :key="user.id">
           <div>
-            <img :src="user.photo_url" alt="" width="40" height="40" />
+            <img v-if="user.photo_url" :src="user.photo_url" alt="" width="40" height="40" />
+            <img v-else src="../../public/user.png" alt="" width="40" height="40" />
           </div>
           <div class="user-name">
             <p>{{ user.user_name }}</p>
@@ -30,7 +31,7 @@
 import getUsers from "@/composables/getUsers";
 import { ref } from "vue";
 export default {
-  setup() {
+  setup(props,context) {
     let privateChatModal = ref(false);
     let groupChatModal = ref(false);
     let {users} = getUsers();
@@ -51,6 +52,13 @@ export default {
       groupChatModal.value = false;
     };
 
+    let addNewChat = (e,user) => {
+      privateChatModal.value = false;
+      groupChatModal.value = false;
+      let obj = {id:user.id,user_name:user.user_name}
+      context.emit('addNewChat',obj);
+    }
+
     return {
       privateChatModal,
       groupChatModal,
@@ -58,6 +66,7 @@ export default {
       groupChatModalClick,
       closeModal,
       users,
+      addNewChat
     };
   },
 };
@@ -112,6 +121,10 @@ button:hover {
   display: flex;
   border-bottom: 1px solid #eee;
   padding: 5px 0;
+}
+.single-user:hover{
+  background: #eee;
+  cursor: pointer;
 }
 .user-name {
   margin-left: 10px;

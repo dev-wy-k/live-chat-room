@@ -18,21 +18,31 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import getUser from "@/composables/getUser";
+import { computed, ref } from "vue";
+import getUser from "@/composables/getLoginUser";
 import { serverTimestamp } from "firebase/firestore";
 import useCollection from "../composables/useCollection";
 export default {
-  setup() {
+  props:['senderId','receiverId','senderName','receiverName'],
+  setup(props) {
     let message = ref("");
 
     let { user } = getUser();
-    let { error, saveDoc, setNewDoc } = useCollection("messages");
+    let sender_id = computed(() => props.senderId);
+    let receiver_id = computed(() => props.receiverId);
+    let sender_name = computed(() => props.senderName);
+    let receiver_name = computed(() => props.receiverName);
+
+    let { saveDoc } = useCollection("messages");
     let handleSubmit = async () => {
       let chat = {
         message: message.value,
         name: user.value.displayName,
         created_at: serverTimestamp(),
+        sender_id:sender_id.value,
+        receiver_id:receiver_id.value,
+        sender_name:sender_name.value,
+        receiver_name:receiver_name.value
       };
       await saveDoc(chat);
       message.value = "";
@@ -69,3 +79,4 @@ form {
   top: 15px;
 }
 </style>
+@/composables/getLoginUser

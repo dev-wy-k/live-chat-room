@@ -15,25 +15,41 @@
 </template>
 
 <script>
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { computed, onUpdated, ref } from "vue";
 import { formatDistanceToNow } from "date-fns";
 
 export default {
-  setup(props,context) {
+  props: ["senderId", "receiverId"],
+  setup(props, context) {
     let messages = ref([]);
     let messageBox = ref(null);
     let chatWindowLoading = ref(true);
+    let sender_id = computed(() => props.senderId);
+    let receiver_id = computed(() => props.receiverId);
 
     onUpdated(() => {
       messageBox.value.scrollTop = messageBox.value.scrollHeight;
     });
     let formattedMessages = computed(() => {
-      return messages.value.map((msg) => {
-        let formatTime = formatDistanceToNow(msg.created_at.toDate());
-        return { ...msg, created_at: formatTime };
-      });
+      return messages.value
+        .filter((data) => {
+          return (
+            data.receiver_id == receiver_id.value &&
+            data.sender_id == sender_id.value
+          );
+        })
+        .map((msg) => {
+          let formatTime = formatDistanceToNow(msg.created_at.toDate());
+          return { ...msg, created_at: formatTime };
+        });
     });
     let q = query(collection(db, "messages"), orderBy("created_at"));
     onSnapshot(q, (docs) => {
@@ -46,7 +62,7 @@ export default {
       }
       messages.value = results;
       chatWindowLoading.value = false;
-      context.emit('chatWindow',chatWindowLoading.value)
+      context.emit("chatWindow", chatWindowLoading.value);
     });
     return { messages, formattedMessages, messageBox };
   },
@@ -72,7 +88,7 @@ export default {
   margin-right: 6px;
 }
 .messages {
-  height: 70vh;
+  height: 68vh;
   overflow: auto;
 }
 </style>
