@@ -1,5 +1,5 @@
 <template>
-  <Loading></Loading>
+  <Loading :isLoading="isLoading"/>
   <div class="chat-container">
       <div class="sidebar">
         <LeftSideNavbar></LeftSideNavbar>
@@ -7,7 +7,7 @@
       </div>
       <div class="output">
         <Navbar></Navbar>
-        <ChatWindow></ChatWindow>
+        <ChatWindow @chatWindow="chatWindow"></ChatWindow>
         <NewChatForm></NewChatForm>
     </div>
   </div>
@@ -19,7 +19,7 @@ import PrivateChat from '../components/PrivateChat'
 import LeftSideNavbar from '../components/LeftSideNavbar'
 import ChatWindow from "../components/ChatWindow";
 import NewChatForm from "../components/NewChatForm";
-import { watch } from "vue";
+import { ref, watch } from "vue";
 import Navbar from "../components/navbar";
 import getUser from "@/composables/getUser";
 import { useRouter } from "vue-router";
@@ -35,11 +35,17 @@ export default {
   setup() {
     let { user } = getUser();
     let router = useRouter();
+    let isLoading = ref(true);
     watch(user, () => {
       if (!user.value) {
         router.push({ name: "Welcome" });
       }
     });
+
+    let chatWindow = (chatWindowLoading) => {
+      isLoading.value = chatWindowLoading;
+    }
+    return {chatWindow, isLoading};
   },
 };
 </script>

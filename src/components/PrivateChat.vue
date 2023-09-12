@@ -34,6 +34,7 @@ export default {
     let privateChatModal = ref(false);
     let groupChatModal = ref(false);
     let {users} = getUsers();
+    // let privateChatLoading = ref(false);
 
     let privateModalClick = () => {
       privateChatModal.value = true;
@@ -63,6 +64,9 @@ export default {
 </script>
 
 <style scoped>
+img{
+  border-radius: 50%;
+}
 h2 {
   padding-bottom: 10px;
   border-bottom: 1px solid #b5b0b0;

@@ -21,9 +21,10 @@ import { computed, onUpdated, ref } from "vue";
 import { formatDistanceToNow } from "date-fns";
 
 export default {
-  setup() {
+  setup(props,context) {
     let messages = ref([]);
     let messageBox = ref(null);
+    let chatWindowLoading = ref(true);
 
     onUpdated(() => {
       messageBox.value.scrollTop = messageBox.value.scrollHeight;
@@ -44,6 +45,8 @@ export default {
         });
       }
       messages.value = results;
+      chatWindowLoading.value = false;
+      context.emit('chatWindow',chatWindowLoading.value)
     });
     return { messages, formattedMessages, messageBox };
   },
@@ -69,7 +72,7 @@ export default {
   margin-right: 6px;
 }
 .messages {
-  max-height: 70vh;
+  height: 70vh;
   overflow: auto;
 }
 </style>
