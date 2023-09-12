@@ -42,8 +42,8 @@ export default {
       return messages.value
         .filter((data) => {
           return (
-            data.receiver_id == receiver_id.value &&
-            data.sender_id == sender_id.value
+            data.sender_id == sender_id.value ||
+            data.sender_id == receiver_id.value 
           );
         })
         .map((msg) => {
