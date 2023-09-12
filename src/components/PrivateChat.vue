@@ -9,10 +9,27 @@
         {{ privateChatModal ? "New Chat" : "New Group Chat" }}
       </h2>
       <div class="users">
-        <div class="single-user" @click="addNewChat(e,user)" v-for="user in users" :key="user.id">
+        <div
+          class="single-user"
+          @click="addNewChat(e, user)"
+          v-for="user in filterUsers"
+          :key="user.id"
+        >
           <div>
-            <img v-if="user.photo_url" :src="user.photo_url" alt="" width="40" height="40" />
-            <img v-else src="../../public/user.png" alt="" width="40" height="40" />
+            <img
+              v-if="user.photo_url"
+              :src="user.photo_url"
+              alt=""
+              width="40"
+              height="40"
+            />
+            <img
+              v-else
+              src="../../public/user.png"
+              alt=""
+              width="40"
+              height="40"
+            />
           </div>
           <div class="user-name">
             <p>{{ user.user_name }}</p>
@@ -28,13 +45,18 @@
 </template>
 
 <script>
+import getLoginUser from "@/composables/getLoginUser";
 import getUsers from "@/composables/getUsers";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 export default {
-  setup(props,context) {
+  setup(props, context) {
     let privateChatModal = ref(false);
     let groupChatModal = ref(false);
-    let {users} = getUsers();
+    let { users } = getUsers();
+    let { user } = getLoginUser();
+    let filterUsers = computed(() => {
+      return users.value.filter((data) => data.id != user.value.uid);
+    });
     // let privateChatLoading = ref(false);
 
     let privateModalClick = () => {
@@ -52,12 +74,12 @@ export default {
       groupChatModal.value = false;
     };
 
-    let addNewChat = (e,user) => {
+    let addNewChat = (e, user) => {
       privateChatModal.value = false;
       groupChatModal.value = false;
-      let obj = {id:user.id,user_name:user.user_name}
-      context.emit('addNewChat',obj);
-    }
+      let obj = { id: user.id, user_name: user.user_name };
+      context.emit("addNewChat", obj);
+    };
 
     return {
       privateChatModal,
@@ -66,14 +88,15 @@ export default {
       groupChatModalClick,
       closeModal,
       users,
-      addNewChat
+      filterUsers,
+      addNewChat,
     };
   },
 };
 </script>
 
 <style scoped>
-img{
+img {
   border-radius: 50%;
 }
 h2 {
@@ -122,7 +145,7 @@ button:hover {
   border-bottom: 1px solid #eee;
   padding: 5px 0;
 }
-.single-user:hover{
+.single-user:hover {
   background: #eee;
   cursor: pointer;
 }

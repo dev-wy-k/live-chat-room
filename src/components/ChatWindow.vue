@@ -2,13 +2,13 @@
   <div class="chat-window">
     <div class="messages" ref="messageBox">
       <div
-        class="single"
+        class="single" :class="{textright : message.sender_id == sender_id}"
         v-for="message in formattedMessages"
         :key="message.id"
       >
         <span class="created-at">{{ message.created_at }} ago</span>
-        <span class="name">{{ message.name }}</span>
-        <span class="message">{{ message.message }}</span>
+        <span v-if="message.sender_id != sender_id" class="name">{{ message.name }}</span>
+        <span  :class="{senderColor: message.sender_id != sender_id}" class="message">{{ message.message }}</span>
       </div>
     </div>
   </div>
@@ -41,10 +41,9 @@ export default {
     let formattedMessages = computed(() => {
       return messages.value
         .filter((data) => {
-          return (
-            data.sender_id == sender_id.value ||
-            data.sender_id == receiver_id.value 
-          );
+          return (receiver_id.value == data.sender_id && data.receiver_id == sender_id.value)||
+          (data.sender_id == sender_id.value && data.receiver_id == receiver_id.value)
+          ;
         })
         .map((msg) => {
           let formatTime = formatDistanceToNow(msg.created_at.toDate());
@@ -64,7 +63,7 @@ export default {
       chatWindowLoading.value = false;
       context.emit("chatWindow", chatWindowLoading.value);
     });
-    return { messages, formattedMessages, messageBox };
+    return { messages, formattedMessages, messageBox , sender_id };
   },
 };
 </script>
@@ -81,7 +80,7 @@ export default {
   display: block;
   color: #999;
   font-size: 12px;
-  margin-bottom: 4px;
+  margin-bottom: 7px;
 }
 .name {
   font-weight: bold;
@@ -90,5 +89,15 @@ export default {
 .messages {
   height: 68vh;
   overflow: auto;
+}
+.textright{
+  text-align: right;
+  padding-right: 25px;
+}
+.senderColor{
+  background: #CCF7FF;
+  padding: 8px;
+  margin: 5px 0 0 0;
+  border-radius: 0 5px 5px 5px;
 }
 </style>
