@@ -1,10 +1,15 @@
 <template>
-  <nav v-if="user">
-    <div>
+  <nav>
+    <div v-if="user">
       <p>
         <span class="rgb-color">{{ user.user_name }}</span>
       </p>
       <p class="email">logged in as {{ user.id }}</p>
+    </div>
+    <div v-else>
+      <p>
+        <span class="rgb-color">Let's connect together</span>
+      </p>
     </div>
     <button @click="userLogout" class="pointer">Logout</button>
   </nav>
