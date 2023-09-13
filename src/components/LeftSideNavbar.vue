@@ -2,7 +2,7 @@
     <nav v-if="user">
       <div>
         <p><span class="rgb-color">{{ user.displayName }}</span></p>
-        <p class="email">logged in as {{ user.email }}</p>
+        <p class="email">{{ user.email }}</p>
       </div>
     </nav>
   </template>
@@ -19,4 +19,3 @@
   </script>
   
   <style></style>
-  ../composables/getLoginUser

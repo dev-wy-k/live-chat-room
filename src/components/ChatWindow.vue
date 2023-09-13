@@ -2,13 +2,28 @@
   <div class="chat-window">
     <div class="messages" ref="messageBox">
       <div
-        class="single" :class="{textright : message.sender_id == sender_id}"
+        class="single"
+        :class="{ textright: message.sender_id == sender_id }"
         v-for="message in formattedMessages"
         :key="message.id"
       >
         <span class="created-at">{{ message.created_at }} ago</span>
-        <span v-if="message.sender_id != sender_id" class="name">{{ message.name }}</span>
-        <span  :class="{senderColor: message.sender_id != sender_id}" class="message">{{ message.message }}</span>
+        <p v-if="message.sender_id != sender_id" class="name">
+          {{ message.name }}
+        </p>
+        <div
+          :class="{
+            flexStart: message.sender_id != sender_id,
+            flexEnd: message.sender_id == sender_id,
+          }"
+        >
+          <p
+            :class="{ senderColor: message.sender_id != sender_id }"
+            class="message"
+          >
+            {{ message.message }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -41,9 +56,12 @@ export default {
     let formattedMessages = computed(() => {
       return messages.value
         .filter((data) => {
-          return (receiver_id.value == data.sender_id && data.receiver_id == sender_id.value)||
-          (data.sender_id == sender_id.value && data.receiver_id == receiver_id.value)
-          ;
+          return (
+            (receiver_id.value == data.sender_id &&
+              data.receiver_id == sender_id.value) ||
+            (data.sender_id == sender_id.value &&
+              data.receiver_id == receiver_id.value)
+          );
         })
         .map((msg) => {
           let formatTime = formatDistanceToNow(msg.created_at.toDate());
@@ -63,7 +81,7 @@ export default {
       chatWindowLoading.value = false;
       context.emit("chatWindow", chatWindowLoading.value);
     });
-    return { messages, formattedMessages, messageBox , sender_id };
+    return { messages, formattedMessages, messageBox, sender_id };
   },
 };
 </script>
@@ -75,6 +93,7 @@ export default {
 }
 .single {
   margin: 18px 0;
+  width: 70%;
 }
 .created-at {
   display: block;
@@ -82,22 +101,40 @@ export default {
   font-size: 12px;
   margin-bottom: 7px;
 }
+.message {
+  width: fit-content;
+  word-break: break-all;
+  background: #e5ebec;
+  padding: 8px;
+  margin: 5px 0 0 0;
+  border-radius: 0 5px 5px 5px;
+}
 .name {
   font-weight: bold;
   margin-right: 6px;
 }
 .messages {
-  height: 68vh;
+  height: 70vh;
   overflow: auto;
 }
-.textright{
+.textright {
   text-align: right;
   padding-right: 25px;
+  margin-left: 30%;
 }
-.senderColor{
-  background: #CCF7FF;
+.senderColor {
+  width: fit-content;
+  background: #ccf7ff;
   padding: 8px;
   margin: 5px 0 0 0;
   border-radius: 0 5px 5px 5px;
+}
+.flexStart{
+  display: flex;
+  justify-content: start;
+}
+.flexEnd{
+  display: flex;
+  justify-content: end;
 }
 </style>

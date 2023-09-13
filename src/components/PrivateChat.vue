@@ -3,13 +3,13 @@
     <button @click="privateModalClick">new chat</button>
   </div>
   <div class="popup" v-if="privateChatModal">
-    <div class="modal-content">
-      <h2 class="text-center">
+    <div class="modal-content m-[20px]">
+      <h2 class="text-center font-bold">
         New Chat
       </h2>
       <div class="users">
         <div
-          class="single-user"
+          class="single-user flex items-center py-1"
           @click="addNewChat(e, user)"
           v-for="user in filterUsers"
           :key="user.id"
@@ -19,15 +19,11 @@
               v-if="user.photo_url"
               :src="user.photo_url"
               alt=""
-              width="40"
-              height="40"
             />
             <img
               v-else
               src="../../public/user.png"
               alt=""
-              width="40"
-              height="40"
             />
           </div>
           <div class="user-name">
@@ -71,7 +67,7 @@ export default {
 
     let addNewChat = (e, user) => {
       privateChatModal.value = false;
-      let obj = { id: user.id, user_name: user.user_name };
+      let obj = { id: user.id, user_name: user.user_name ,photo_url:user.photo_url };
       context.emit("addNewChat", obj);
     };
 
@@ -88,11 +84,18 @@ export default {
 </script>
 
 <style scoped>
+.users{
+  max-height: 400px;
+  overflow: auto;
+}
 img {
   border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }
 h2 {
   padding-bottom: 10px;
+  margin-top: 2px;
   border-bottom: 1px solid #b5b0b0;
 }
 .private-container {
@@ -128,14 +131,13 @@ button:hover {
 }
 .modal-content {
   width: 400px;
+  max-height: 500px;
   background: #ffffff;
   border-radius: 10px;
   padding: 10px 20px;
 }
 .single-user {
-  display: flex;
   border-bottom: 1px solid #eee;
-  padding: 5px 0;
 }
 .single-user:hover {
   background: #eee;

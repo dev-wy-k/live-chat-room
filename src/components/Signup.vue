@@ -1,24 +1,24 @@
 <template>
-  <h2>Register You Account</h2>
-  <form @submit.prevent="signUp">
+  <h2 class="font-bold text-xl">Register You Account</h2>
+  <form @submit.prevent="signUp" class="mb-0">
     <input type="file" name="" id="file-upload" @change="fileUpload" hidden />
     <label for="file-upload">
-      <img
-        v-if="previewImage"
-        :src="previewImage"
-        alt=""
-        width="100"
-        class="pointer profile"
-        height="100"
-      />
-      <img
-        v-if="!previewImage"
-        src="../../public/user.png"
-        alt=""
-        width="100"
-        class="pointer"
-        height="100"
-      />
+      <div class="flex justify-center">
+        <div>
+          <img
+            v-if="previewImage"
+            :src="previewImage"
+            alt=""
+            class="pointer profile"
+          />
+          <img
+            v-if="!previewImage"
+            src="../../public/user.png"
+            alt=""
+            class="pointer"
+          />
+        </div>
+      </div>
     </label>
     <input type="text" placeholder="display name" v-model="displayName" />
     <input type="email" placeholder="email" v-model="email" />
@@ -34,7 +34,6 @@
 import { ref } from "vue";
 import useSignup from "../composables/useSignup";
 import saveImage from "../composables/saveImage";
-import { getDownloadURL } from "firebase/storage";
 
 export default {
   setup(props, context) {
@@ -83,6 +82,10 @@ export default {
 </script>
 
 <style scoped>
+img{
+  width: 100px;
+  height: 100px;
+}
 .profile {
   border-radius: 50%;
 }

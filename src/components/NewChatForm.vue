@@ -9,8 +9,6 @@
     <img
       class="image pointer"
       src="../../public/send.png"
-      width="20"
-      height="20"
       alt=""
       @click="handleSubmit"
     />
@@ -76,7 +74,9 @@ form {
 .image {
   position: absolute;
   right: 15px;
-  top: 15px;
+  top: 13px;
+  width: 25px;
+  height: 25px;
 }
 </style>
 @/composables/getLoginUser

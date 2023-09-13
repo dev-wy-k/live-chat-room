@@ -104,6 +104,8 @@ export default {
 .chat-block {
   margin: 20px 0 0 0;
   padding: 0;
+  max-height: 70vh;
+  overflow: auto;
 }
 .user-chat {
   border-bottom: 1px solid #d8d2d2;
@@ -111,7 +113,7 @@ export default {
 }
 .user-chat:hover {
   cursor: pointer;
-  background: #c7c4c4;
+  background: #c9e0ee;
 }
 li {
   list-style-type: none;

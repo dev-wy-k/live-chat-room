@@ -1,12 +1,12 @@
 <template>
   <Loading :isLoading="isLoading" />
-  <div class="chat-container">
-    <div class="sidebar">
-      <LeftSideNavbar></LeftSideNavbar>
+  <div class="grid md:grid-cols-5 h-[100vh]">
+    <div class="bg-gray-100">
+      <LeftSideNavbar class="border-b-1 border-b-blue-300"></LeftSideNavbar>
       <PrivateChat @addNewChat="addNewChat"></PrivateChat>
       <ChatList @addNewChat="addNewChat" :senderId="senderId"></ChatList>
     </div>
-    <div class="output">
+    <div class="md:col-span-4 bg-white ">
       <Navbar :chatPersonData="chatPersonData"></Navbar>
       <ChatWindow
         @chatWindow="chatWindow"
@@ -65,6 +65,7 @@ export default {
 
     // get chat person data from private chat view
     let addNewChat = (data) => {
+      console.log(data)
       chatPersonData.value = data;
       senderId.value = user.value.uid;
       senderName.value = user.value.displayName;
