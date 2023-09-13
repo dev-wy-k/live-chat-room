@@ -7,7 +7,12 @@
         v-for="message in filteredMessages"
         :key="message.id"
       >
-        <span>{{ message.receiver_name }}</span>
+        <div v-if="user">
+          <span v-if="message.receiver_id == user.uid">{{
+            message.sender_name
+          }}</span>
+          <span v-else>{{ message.receiver_name }}</span>
+        </div>
       </li>
     </ul>
   </div>
@@ -30,41 +35,67 @@ export default {
   setup(props, context) {
     let messages = ref([]);
     let { user } = getLoginUser();
+    let temp1 = [];
     let q = query(
       collection(db, "messages"),
       where("sender_id", "==", user.value.uid),
       orderBy("created_at")
     );
     onSnapshot(q, (docs) => {
-      let results = [];
       if (docs) {
         docs.forEach((doc) => {
           let document = { id: doc.id, ...doc.data() };
-          doc.data().created_at && results.push(document);
+          doc.data().created_at && temp1.push(document);
         });
       }
-      messages.value = results;
+    });
+
+    let q2 = query(
+      collection(db, "messages"),
+      where("receiver_id", "==", user.value.uid),
+      orderBy("created_at")
+    );
+    onSnapshot(q2, (docs) => {
+      if (docs) {
+        docs.forEach((doc) => {
+          let document = { id: doc.id, ...doc.data() };
+          doc.data().created_at && temp1.push(document);
+        });
+      }
+      messages.value = temp1;
     });
 
     let filteredMessages = computed(() => {
-      let uniqueData = {};
+      let uniqueData = [];
       let uniqueArray = [];
 
       messages.value.forEach((item) => {
-        let senderId = item.receiver_id;
-        if (!uniqueData[senderId]) {
-          uniqueData[senderId] = true;
+        if (
+          !(
+            uniqueData.includes(`${item.sender_id}-${item.receiver_id}`) ||
+            uniqueData.includes(`${item.receiver_id}-${item.sender_id}`)
+          )
+        ) {
           uniqueArray.push(item);
+          uniqueData.push(`${item.sender_id}-${item.receiver_id}`);
         }
       });
-      console.log(uniqueArray)
       return uniqueArray;
     });
     let addNewChat = (e, message) => {
-      let obj = { id: message.receiver_id, user_name: message.receiver_name };
+      let obj = {
+        id:
+          message.receiver_id == user.value.uid
+            ? message.sender_id
+            : message.receiver_id,
+        user_name:
+          message.receiver_id == user.value.uid
+            ? message.sender_name
+            : message.receiver_name,
+      };
       context.emit("addNewChat", obj);
     };
-    return { messages, addNewChat, filteredMessages };
+    return { messages, addNewChat, filteredMessages, user };
   },
 };
 </script>

@@ -1,12 +1,11 @@
 <template>
   <div class="private-container">
     <button @click="privateModalClick">new chat</button>
-    <button @click="groupChatModalClick">new group chat</button>
   </div>
-  <div class="popup" v-if="privateChatModal || groupChatModal">
+  <div class="popup" v-if="privateChatModal">
     <div class="modal-content">
       <h2 class="text-center">
-        {{ privateChatModal ? "New Chat" : "New Group Chat" }}
+        New Chat
       </h2>
       <div class="users">
         <div
@@ -51,7 +50,6 @@ import { computed, ref } from "vue";
 export default {
   setup(props, context) {
     let privateChatModal = ref(false);
-    let groupChatModal = ref(false);
     let { users } = getUsers();
     let { user } = getLoginUser();
     let filterUsers = computed(() => {
@@ -61,31 +59,25 @@ export default {
 
     let privateModalClick = () => {
       privateChatModal.value = true;
-      groupChatModal.value = false;
     };
 
     let groupChatModalClick = () => {
-      groupChatModal.value = true;
       privateChatModal.value = false;
     };
 
     let closeModal = () => {
       privateChatModal.value = false;
-      groupChatModal.value = false;
     };
 
     let addNewChat = (e, user) => {
       privateChatModal.value = false;
-      groupChatModal.value = false;
       let obj = { id: user.id, user_name: user.user_name };
       context.emit("addNewChat", obj);
     };
 
     return {
       privateChatModal,
-      groupChatModal,
       privateModalClick,
-      groupChatModalClick,
       closeModal,
       users,
       filterUsers,

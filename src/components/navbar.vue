@@ -21,7 +21,7 @@ import useLogout from "../composables/useLogout";
 export default {
   props: ['chatPersonData'],
   setup(props) {
-    let user = computed(() => props.chatPersonData);;
+    let user = computed(() => props.chatPersonData);
     let { error, logout } = useLogout();
 
     let userLogout = async () => {
