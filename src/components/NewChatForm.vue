@@ -21,7 +21,7 @@ import getUser from "@/composables/getLoginUser";
 import { serverTimestamp } from "firebase/firestore";
 import useCollection from "../composables/useCollection";
 export default {
-  props:['senderId','receiverId','senderName','receiverName'],
+  props:['senderId','receiverId','senderName','receiverName','photoUrl'],
   setup(props) {
     let message = ref("");
 
@@ -30,6 +30,7 @@ export default {
     let receiver_id = computed(() => props.receiverId);
     let sender_name = computed(() => props.senderName);
     let receiver_name = computed(() => props.receiverName);
+    let photo_url = computed(() => props.photoUrl);
 
     let { saveDoc } = useCollection("messages");
     let handleSubmit = async () => {
@@ -40,7 +41,8 @@ export default {
         sender_id:sender_id.value,
         receiver_id:receiver_id.value,
         sender_name:sender_name.value,
-        receiver_name:receiver_name.value
+        receiver_name:receiver_name.value,
+        photo_url:photo_url.value ? photo_url.value : ""
       };
       await saveDoc(chat);
       message.value = "";

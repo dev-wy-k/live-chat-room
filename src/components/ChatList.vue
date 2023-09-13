@@ -1,17 +1,22 @@
 <template>
   <div class="chat-list-sidebar">
-    <ul class="chat-block">
+    <ul class="chat-block" ref="chatblock">
       <li
         @click="addNewChat(e, message)"
         class="user-chat"
         v-for="message in filteredMessages"
         :key="message.id"
       >
-        <div v-if="user">
-          <span v-if="message.receiver_id == user.uid">{{
-            message.sender_name
-          }}</span>
-          <span v-else>{{ message.receiver_name }}</span>
+        <div class="flex items-center">
+          <div>
+            <img :src="message.photo_url" alt="profile" />
+          </div>
+          <div v-if="user" class="ml-2">
+            <span v-if="message.receiver_id == user.uid">{{
+              message.sender_name
+            }}</span>
+            <span v-else>{{ message.receiver_name }}</span>
+          </div>
         </div>
       </li>
     </ul>
@@ -28,41 +33,18 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import getLoginUser from "@/composables/getLoginUser";
-import { computed, ref } from "vue";
+import { computed, onUpdated, ref } from "vue";
 
 export default {
   props: ["senderId"],
   setup(props, context) {
     let messages = ref([]);
+    let chatblock = ref(null);
     let { user } = getLoginUser();
     let temp1 = [];
-    let q = query(
-      collection(db, "messages"),
-      where("sender_id", "==", user.value.uid),
-      orderBy("created_at")
-    );
-    onSnapshot(q, (docs) => {
-      if (docs) {
-        docs.forEach((doc) => {
-          let document = { id: doc.id, ...doc.data() };
-          doc.data().created_at && temp1.push(document);
-        });
-      }
-    });
 
-    let q2 = query(
-      collection(db, "messages"),
-      where("receiver_id", "==", user.value.uid),
-      orderBy("created_at")
-    );
-    onSnapshot(q2, (docs) => {
-      if (docs) {
-        docs.forEach((doc) => {
-          let document = { id: doc.id, ...doc.data() };
-          doc.data().created_at && temp1.push(document);
-        });
-      }
-      messages.value = temp1;
+    onUpdated(() => {
+      chatblock.value.scrollTop = 0;
     });
 
     let filteredMessages = computed(() => {
@@ -82,6 +64,40 @@ export default {
       });
       return uniqueArray;
     });
+
+    let q = query(
+      collection(db, "messages"),
+      where("sender_id", "==", user.value.uid),
+      orderBy("created_at", "desc")
+    );
+
+    let q2 = query(
+      collection(db, "messages"),
+      where("receiver_id", "==", user.value.uid),
+      orderBy("created_at", "desc")
+    );
+    onSnapshot(q, (docs) => {
+      let temp1 = [];
+      if (docs) {
+        docs.forEach((doc) => {
+          let document = { id: doc.id, ...doc.data() };
+          doc.data().created_at && temp1.push(document);
+        });
+      }
+      messages.value = temp1; // Update messages with new data
+    });
+
+    onSnapshot(q2, (docs) => {
+      let temp2 = [];
+      if (docs) {
+        docs.forEach((doc) => {
+          let document = { id: doc.id, ...doc.data() };
+          doc.data().created_at && temp2.push(document);
+        });
+      }
+      messages.value = messages.value.concat(temp2); // Merge new data with existing messages
+    });
+
     let addNewChat = (e, message) => {
       let obj = {
         id:
@@ -92,15 +108,21 @@ export default {
           message.receiver_id == user.value.uid
             ? message.sender_name
             : message.receiver_name,
+        photo_url: message.photo_url,
       };
       context.emit("addNewChat", obj);
     };
-    return { messages, addNewChat, filteredMessages, user };
+    return { messages, addNewChat, filteredMessages, user, chatblock };
   },
 };
 </script>
 
 <style scoped>
+img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
 .chat-block {
   margin: 20px 0 0 0;
   padding: 0;

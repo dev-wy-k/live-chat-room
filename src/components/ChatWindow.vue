@@ -114,7 +114,7 @@ export default {
   margin-right: 6px;
 }
 .messages {
-  height: 70vh;
+  height: 76vh;
   overflow: auto;
 }
 .textright {

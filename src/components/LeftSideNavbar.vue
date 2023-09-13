@@ -1,9 +1,14 @@
 <template>
-    <nav v-if="user">
+    <nav v-if="user"  class="pt-[8px]">
+     <div class="flex items-center">
       <div>
+        <img :src="user.photoURL" alt="profile">
+      </div>
+      <div class="ml-2">
         <p><span class="rgb-color">{{ user.displayName }}</span></p>
         <p class="email">{{ user.email }}</p>
       </div>
+     </div>
     </nav>
   </template>
   
@@ -18,4 +23,13 @@
   };
   </script>
   
-  <style></style>
+  <style>
+  nav{
+    padding-top: 8px;
+  }
+  img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+</style>

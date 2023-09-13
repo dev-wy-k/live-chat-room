@@ -18,6 +18,7 @@
         :senderName="senderName"
         :receiverName="receiverName"
         :receiverId="receiverId"
+        :photoUrl="photo_url"
       ></NewChatForm>
     </div>
   </div>
@@ -53,6 +54,7 @@ export default {
     let receiverId = ref(""); // message receiver
     let senderName = ref(""); // sender name
     let receiverName = ref(""); //receiver name
+    let photo_url = ref(""); // receiver photo url
     watch(user, () => {
       if (!user.value) {
         router.push({ name: "Welcome" });
@@ -65,12 +67,12 @@ export default {
 
     // get chat person data from private chat view
     let addNewChat = (data) => {
-      console.log(data)
       chatPersonData.value = data;
       senderId.value = user.value.uid;
       senderName.value = user.value.displayName;
       receiverId.value = data.id;
       receiverName.value = data.user_name;
+      photo_url.value = data.photo_url;
     };
     return {
       chatWindow,
@@ -81,6 +83,7 @@ export default {
       receiverId,
       senderName,
       receiverName,
+      photo_url
     };
   },
 };
