@@ -157,10 +157,10 @@ nav p.email {
   color: #999;
 }
 .showSidebar {
-  display: block;
+  display: block !important;
 }
 .hideOutput {
-  display: none;
+  display: none !important;
 }
 .formload-background {
   background-image: url("../../public/chat-bg.jpg");
