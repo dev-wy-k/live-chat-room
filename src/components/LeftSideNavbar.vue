@@ -1,5 +1,5 @@
 <template>
-    <nav v-if="user"  class="pt-[8px]">
+    <nav v-if="user"  class="pt-[8px] pl-[2px] pr-[2px]">
      <div class="flex items-center">
       <div>
         <img :src="user.photoURL" alt="profile">

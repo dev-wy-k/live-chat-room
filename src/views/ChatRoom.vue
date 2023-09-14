@@ -1,31 +1,49 @@
 <template>
   <Loading :isLoading="isLoading" />
   <div class="grid md:grid-cols-5 h-[100vh]">
-    <div class="bg-gray-100">
-      <LeftSideNavbar class="border-b-1 border-b-blue-300"></LeftSideNavbar>
+    <div
+      class="left-sidebar hidden md:block"
+      :class="{ showSidebar: mobileViewStatus }"
+    >
+      <LeftSideNavbar class="border-b-1 border-b-gray-600"></LeftSideNavbar>
       <PrivateChat @addNewChat="addNewChat"></PrivateChat>
-      <ChatList @addNewChat="addNewChat" :senderId="senderId"></ChatList>
-    </div>
-    <div class="md:col-span-4 bg-white ">
-      <Navbar :chatPersonData="chatPersonData"></Navbar>
-      <ChatWindow
-        @chatWindow="chatWindow"
-        :senderId="senderId"
+      <ChatList
+        @addNewChat="addNewChat"
         :receiverId="receiverId"
-      ></ChatWindow>
-      <NewChatForm
         :senderId="senderId"
-        :senderName="senderName"
-        :receiverName="receiverName"
-        :receiverId="receiverId"
-        :photoUrl="photo_url"
-      ></NewChatForm>
+        @ChatList="ChatList"
+      ></ChatList>
     </div>
+    <div
+      class="md:col-span-4 bg-gray-900"
+      :class="{ hideOutput: mobileViewStatus }"
+    >
+      <Navbar :chatPersonData="chatPersonData" @backArrow="backArrow"></Navbar>
+      <div v-if="receiverId">
+        <ChatWindow
+          @chatWindow="chatWindow"
+          :mobileViewStatus="mobileViewStatus"
+          :senderId="senderId"
+          :receiverId="receiverId"
+        ></ChatWindow>
+        <NewChatForm
+          :senderId="senderId"
+          :senderName="senderName"
+          :receiverName="receiverName"
+          :receiverId="receiverId"
+          :photoUrl="photo_url"
+        ></NewChatForm>
+      </div>
+    </div>
+    <div
+      v-if="!receiverId"
+      class="hidden md:block md:col-span-4 formload-background"
+    ></div>
   </div>
 </template>
 
 <script>
-import ChatList from '../components/ChatList'
+import ChatList from "../components/ChatList";
 import Loading from "../components/Loading";
 import PrivateChat from "../components/PrivateChat";
 import LeftSideNavbar from "../components/LeftSideNavbar";
@@ -55,6 +73,7 @@ export default {
     let senderName = ref(""); // sender name
     let receiverName = ref(""); //receiver name
     let photo_url = ref(""); // receiver photo url
+    let mobileViewStatus = ref(true);
     watch(user, () => {
       if (!user.value) {
         router.push({ name: "Welcome" });
@@ -64,15 +83,24 @@ export default {
     let chatWindow = (chatWindowLoading) => {
       isLoading.value = chatWindowLoading;
     };
+    let ChatList = (chatListLoading) => {
+      isLoading.value = chatListLoading;
+    };
 
     // get chat person data from private chat view
     let addNewChat = (data) => {
+      mobileViewStatus.value = false;
       chatPersonData.value = data;
       senderId.value = user.value.uid;
       senderName.value = user.value.displayName;
       receiverId.value = data.id;
       receiverName.value = data.user_name;
       photo_url.value = data.photo_url;
+    };
+
+    //get event back arrow event from navbar
+    let backArrow = (val) => {
+      mobileViewStatus.value = val;
     };
     return {
       chatWindow,
@@ -83,13 +111,19 @@ export default {
       receiverId,
       senderName,
       receiverName,
-      photo_url
+      photo_url,
+      backArrow,
+      mobileViewStatus,
+      ChatList,
     };
   },
 };
 </script>
 
 <style>
+.left-sidebar {
+  background: #141414;
+}
 .chat-container {
   height: 100vh;
   margin: 0;
@@ -121,6 +155,20 @@ nav p {
 nav p.email {
   font-size: 14px;
   color: #999;
+}
+.showSidebar {
+  display: block;
+}
+.hideOutput {
+  display: none;
+}
+.formload-background {
+  background-image: url("../../public/chat-bg.jpg");
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 </style>
 @/composables/getLoginUser

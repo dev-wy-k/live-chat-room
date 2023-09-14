@@ -1,5 +1,5 @@
 <template>
-  <h2 class="font-bold text-xl">Register You Account</h2>
+  <h2 class="font-bold text-xl">Register Your Account</h2>
   <form @submit.prevent="signUp" class="mb-0">
     <input type="file" name="" id="file-upload" @change="fileUpload" hidden />
     <label for="file-upload">

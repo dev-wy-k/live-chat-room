@@ -66,7 +66,9 @@ form {
   border: 0;
   border-radius: 20px;
   font-family: inherit;
-  background-color: rgb(229, 229, 229);
+  background-color: #272727;
+  padding-right: 55px;
+  color: lightgray;
   outline: none;
   height: 50px;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-window">
+  <div class="chat-window bg-gray-900">
     <div class="messages" ref="messageBox">
       <div
         class="single"
@@ -7,8 +7,15 @@
         v-for="message in formattedMessages"
         :key="message.id"
       >
-        <span class="created-at">{{ message.created_at }} ago</span>
-        <p v-if="message.sender_id != sender_id" class="name">
+        <span
+          class="created-at"
+          :class="{
+            dateTextLeft: message.sender_id != sender_id,
+            dateTextRight: message.sender_id == sender_id,
+          }"
+          >{{ message.created_at }} ago</span
+        >
+        <p v-if="message.sender_id != sender_id" class="name text-blue-600">
           {{ message.name }}
         </p>
         <div
@@ -42,13 +49,14 @@ import { computed, onUpdated, ref } from "vue";
 import { formatDistanceToNow } from "date-fns";
 
 export default {
-  props: ["senderId", "receiverId"],
+  props: ["senderId", "receiverId", "mobileViewStatus"],
   setup(props, context) {
     let messages = ref([]);
     let messageBox = ref(null);
     let chatWindowLoading = ref(true);
     let sender_id = computed(() => props.senderId);
     let receiver_id = computed(() => props.receiverId);
+    let mobileViewStatus = computed(() => props.mobileViewStatus);
 
     onUpdated(() => {
       messageBox.value.scrollTop = messageBox.value.scrollHeight;
@@ -81,14 +89,19 @@ export default {
       chatWindowLoading.value = false;
       context.emit("chatWindow", chatWindowLoading.value);
     });
-    return { messages, formattedMessages, messageBox, sender_id };
+    return {
+      messages,
+      formattedMessages,
+      messageBox,
+      sender_id,
+      mobileViewStatus,
+    };
   },
 };
 </script>
 
 <style>
 .chat-window {
-  background: #fafafa;
   padding: 10px 25px;
 }
 .single {
@@ -104,7 +117,8 @@ export default {
 .message {
   width: fit-content;
   word-break: break-all;
-  background: #e5ebec;
+  background: #292929;
+  color: lightgrey;
   padding: 8px;
   margin: 5px 0 0 0;
   border-radius: 0 5px 5px 5px;
@@ -114,26 +128,32 @@ export default {
   margin-right: 6px;
 }
 .messages {
-  height: 76vh;
+  height: 72vh;
   overflow: auto;
 }
-.textright {
+.dateTextLeft {
+  text-align: left;
+}
+.dateTextRight {
   text-align: right;
-  padding-right: 25px;
+}
+.textright {
+  text-align: left;
   margin-left: 30%;
 }
 .senderColor {
   width: fit-content;
-  background: #ccf7ff;
+  background: #0E3A80;
+  color: lightgrey;
   padding: 8px;
   margin: 5px 0 0 0;
   border-radius: 0 5px 5px 5px;
 }
-.flexStart{
+.flexStart {
   display: flex;
   justify-content: start;
 }
-.flexEnd{
+.flexEnd {
   display: flex;
   justify-content: end;
 }

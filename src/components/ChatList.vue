@@ -1,11 +1,12 @@
 <template>
   <div class="chat-list-sidebar">
-    <ul class="chat-block" ref="chatblock">
+    <ul class="chat-block text-gray-400" ref="chatblock">
       <li
         @click="addNewChat(e, message)"
         class="user-chat"
         v-for="message in filteredMessages"
         :key="message.id"
+        :class="{active:receiver_id == message.receiver_id}"
       >
         <div class="flex items-center">
           <div>
@@ -36,16 +37,18 @@ import getLoginUser from "@/composables/getLoginUser";
 import { computed, onUpdated, ref } from "vue";
 
 export default {
-  props: ["senderId"],
+  props: ["senderId","receiverId"],
   setup(props, context) {
     let messages = ref([]);
     let chatblock = ref(null);
     let { user } = getLoginUser();
+    let receiver_id = computed(() => [props.receiverId]);
     let temp1 = [];
+    let chatListLoading = ref(true);
 
-    onUpdated(() => {
-      chatblock.value.scrollTop = 0;
-    });
+    // onUpdated(() => {
+    //   chatblock.value.scrollTop = 0;
+    // });
 
     let filteredMessages = computed(() => {
       let uniqueData = [];
@@ -96,6 +99,8 @@ export default {
         });
       }
       messages.value = messages.value.concat(temp2); // Merge new data with existing messages
+      chatListLoading.value = false;
+      context.emit("chatList", chatListLoading.value);
     });
 
     let addNewChat = (e, message) => {
@@ -112,7 +117,7 @@ export default {
       };
       context.emit("addNewChat", obj);
     };
-    return { messages, addNewChat, filteredMessages, user, chatblock };
+    return { messages, addNewChat, filteredMessages, user, chatblock, receiver_id };
   },
 };
 </script>
@@ -130,14 +135,18 @@ img {
   overflow: auto;
 }
 .user-chat {
-  border-bottom: 1px solid #d8d2d2;
-  padding: 10px;
+  padding: 5px;
+  margin: 2px 5px;
+  border-radius: 5px;
 }
 .user-chat:hover {
   cursor: pointer;
-  background: #c9e0ee;
+  background: #081E40;
 }
 li {
   list-style-type: none;
+}
+.active{
+  background: #081E40;
 }
 </style>

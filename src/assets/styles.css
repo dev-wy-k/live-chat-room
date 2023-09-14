@@ -1,6 +1,6 @@
 body {
-    /* font-size: 13px; */
-    background: #e3e1ff;
+    font-size: 13px;
+    background: #141414;
     color: #444;
     margin: 0;
     padding: 0;
@@ -10,8 +10,9 @@ body {
     max-width: 960px;
     margin: 40px auto;
     border-radius: 20px;
+    color: lightgrey;
     box-shadow: 2px 4px 6px rgba(28, 6, 49, 0.1);
-    background: white;
+    background: #081E40;
   }
   .error {
     color: #ff3f80;
@@ -20,9 +21,12 @@ body {
   .text-center{
     text-align: center;
   }
+  .font-normal{
+    font-weight: normal;
+  }
   button {
     text-decoration: none;
-    background: #305dd0;
+    background: #12399c;
     color: white;
     font-weight: bold;
     border: 0;
@@ -31,7 +35,7 @@ body {
     cursor: pointer;
   }
   button:hover{
-    background: #12399c;
+    background: #09246b;
   }
   .pointer{
     cursor: pointer;

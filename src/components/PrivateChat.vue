@@ -1,12 +1,10 @@
 <template>
   <div class="private-container">
-    <button @click="privateModalClick">new chat</button>
+    <button @click="privateModalClick" class="text-gray-200">new chat</button>
   </div>
   <div class="popup" v-if="privateChatModal">
     <div class="modal-content m-[20px]">
-      <h2 class="text-center font-bold">
-        New Chat
-      </h2>
+      <h2 class="text-center font-bold">New Chat</h2>
       <div class="users">
         <div
           class="single-user flex items-center py-1"
@@ -15,16 +13,8 @@
           :key="user.id"
         >
           <div>
-            <img
-              v-if="user.photo_url"
-              :src="user.photo_url"
-              alt=""
-            />
-            <img
-              v-else
-              src="../../public/user.png"
-              alt=""
-            />
+            <img v-if="user.photo_url" :src="user.photo_url" alt="" />
+            <img v-else src="../../public/user.png" alt="" />
           </div>
           <div class="user-name">
             <p>{{ user.user_name }}</p>
@@ -67,7 +57,11 @@ export default {
 
     let addNewChat = (e, user) => {
       privateChatModal.value = false;
-      let obj = { id: user.id, user_name: user.user_name ,photo_url:user.photo_url };
+      let obj = {
+        id: user.id,
+        user_name: user.user_name,
+        photo_url: user.photo_url,
+      };
       context.emit("addNewChat", obj);
     };
 
@@ -84,7 +78,7 @@ export default {
 </script>
 
 <style scoped>
-.users{
+.users {
   max-height: 400px;
   overflow: auto;
 }
@@ -94,9 +88,10 @@ img {
   height: 40px;
 }
 h2 {
-  padding-bottom: 10px;
-  margin-top: 2px;
-  border-bottom: 1px solid #b5b0b0;
+  background: #081E40;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
 .private-container {
   display: flex;
@@ -105,9 +100,8 @@ h2 {
 }
 button {
   text-decoration: none;
-  background: #c8c9cb;
-  color: #262424;
-  font-weight: bold;
+  background: #2b2c33;
+  font-weight: normal;
   border: 0;
   border-radius: 20px;
   padding: 10px 20px;
@@ -115,7 +109,7 @@ button {
   margin-top: 10px;
 }
 button:hover {
-  background: #b8babd;
+  background: #14172a;
 }
 .popup {
   position: fixed;
@@ -124,6 +118,7 @@ button:hover {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  color: lightgrey;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,16 +127,16 @@ button:hover {
 .modal-content {
   width: 400px;
   max-height: 500px;
-  background: #ffffff;
+  background: #141414;
   border-radius: 10px;
   padding: 10px 20px;
 }
 .single-user {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #656262;
 }
 .single-user:hover {
-  background: #eee;
   cursor: pointer;
+  background: #081e40;
 }
 .user-name {
   margin-left: 10px;
