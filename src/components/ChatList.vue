@@ -132,6 +132,9 @@ img {
   margin: 20px 0 0 0;
   padding: 0;
   max-height: 70vh;
+  overflow: hidden;
+}
+.chat-block:hover{
   overflow: auto;
 }
 .user-chat {

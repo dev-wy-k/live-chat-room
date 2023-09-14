@@ -102,7 +102,7 @@ export default {
 
 <style>
 .chat-window {
-  padding: 10px 25px;
+  padding: 10px 0px 10px 25px;
 }
 .single {
   margin: 18px 0;
@@ -128,7 +128,7 @@ export default {
   margin-right: 6px;
 }
 .messages {
-  height: 72vh;
+  height: 80vh;
   overflow: auto;
 }
 .dateTextLeft {
@@ -140,6 +140,7 @@ export default {
 .textright {
   text-align: left;
   margin-left: 30%;
+  padding-right: 25px;
 }
 .senderColor {
   width: fit-content;

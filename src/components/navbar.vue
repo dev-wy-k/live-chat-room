@@ -48,7 +48,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .navbar-chat-person {
   display: flex;
   align-items: center;
@@ -58,8 +58,8 @@ export default {
 }
 img {
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 40px !important;
+  height: 40px !important;
 }
 .arrow{
   width: 20px;
