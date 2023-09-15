@@ -31,7 +31,7 @@
           :senderName="senderName"
           :receiverName="receiverName"
           :receiverId="receiverId"
-          :photoUrl="photo_url"
+          :receiverPhotoUrl="photo_url"
         ></NewChatForm>
       </div>
     </div>

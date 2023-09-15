@@ -1,10 +1,10 @@
 <template>
   <div class="private-container">
-    <button @click="privateModalClick" class="text-gray-200">new chat</button>
+    <button @click="privateModalClick" class="text-gray-200 mt-3">new chat</button>
   </div>
   <div class="popup" v-if="privateChatModal">
     <div class="modal-content m-[20px]">
-      <h2 class="text-center font-bold">New Chat</h2>
+      <h2 class="text-center">New Chat</h2>
       <div class="users">
         <div
           class="single-user flex items-center py-1"
@@ -22,7 +22,7 @@
           </div>
         </div>
       </div>
-      <div class="text-center">
+      <div class="text-center mt-3">
         <button @click="closeModal">close</button>
       </div>
     </div>
@@ -77,7 +77,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .users {
   max-height: 400px;
   overflow: auto;
@@ -98,19 +98,7 @@ h2 {
   justify-content: center;
   gap: 10px;
 }
-button {
-  text-decoration: none;
-  background: #2b2c33;
-  font-weight: normal;
-  border: 0;
-  border-radius: 20px;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-button:hover {
-  background: #14172a;
-}
+
 .popup {
   position: fixed;
   top: 0;

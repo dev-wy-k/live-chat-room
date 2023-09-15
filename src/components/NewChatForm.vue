@@ -17,20 +17,20 @@
 
 <script>
 import { computed, ref } from "vue";
-import getUser from "@/composables/getLoginUser";
 import { serverTimestamp } from "firebase/firestore";
 import useCollection from "../composables/useCollection";
+import getLoginUser from '@/composables/getLoginUser';
 export default {
-  props: ["senderId", "receiverId", "senderName", "receiverName", "photoUrl"],
+  props: ["senderId", "receiverId", "senderName", "receiverName", "receiverPhotoUrl"],
   setup(props) {
     let message = ref("");
 
-    let { user } = getUser();
+    let { user } = getLoginUser();
     let sender_id = computed(() => props.senderId);
     let receiver_id = computed(() => props.receiverId);
     let sender_name = computed(() => props.senderName);
     let receiver_name = computed(() => props.receiverName);
-    let photo_url = computed(() => props.photoUrl);
+    let receiver_photo_url = computed(() => props.receiverPhotoUrl);
 
     let { saveDoc } = useCollection("messages");
     let handleSubmit = async () => {
@@ -42,7 +42,9 @@ export default {
         receiver_id: receiver_id.value,
         sender_name: sender_name.value,
         receiver_name: receiver_name.value,
-        photo_url: photo_url.value ? photo_url.value : "",
+        receiver_photo_url: receiver_photo_url.value ? receiver_photo_url.value : "",
+        sender_photo_url : user.value.photoURL ? user.value.photoURL : "",
+        read_status: false
       };
       await saveDoc(chat);
       message.value = "";

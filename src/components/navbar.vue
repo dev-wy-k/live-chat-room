@@ -67,4 +67,3 @@ img {
   background: white;
 }
 </style>
-../composables/getLoginUser

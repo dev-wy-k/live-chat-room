@@ -6,11 +6,17 @@
         class="user-chat"
         v-for="message in filteredMessages"
         :key="message.id"
-        :class="{active:receiver_id == message.receiver_id}"
+        :class="{ active: receiver_id == message.receiver_id }"
       >
-        <div class="flex items-center">
+        <div class="flex justify-between items-center">
+          <div v-if="user" class="flex items-center">
           <div>
-            <img :src="message.photo_url" alt="profile" />
+            <img
+              v-if="message.receiver_id == user.uid"
+              :src="message.sender_photo_url"
+              alt="profile"
+            />
+            <img v-else :src="message.receiver_photo_url" alt="profile" />
           </div>
           <div v-if="user" class="ml-2">
             <span v-if="message.receiver_id == user.uid">{{
@@ -18,6 +24,12 @@
             }}</span>
             <span v-else>{{ message.receiver_name }}</span>
           </div>
+        </div>
+        <div class="border-4 border-red-600 rounded mr-3">
+          <!-- <span v-if="message.msg_count">
+            <img src="../../public/noti.gif" class="noti" alt="" />
+          </span> -->
+        </div>
         </div>
       </li>
     </ul>
@@ -37,36 +49,44 @@ import getLoginUser from "@/composables/getLoginUser";
 import { computed, onUpdated, ref } from "vue";
 
 export default {
-  props: ["senderId","receiverId"],
+  props: ["senderId", "receiverId"],
   setup(props, context) {
     let messages = ref([]);
     let chatblock = ref(null);
     let { user } = getLoginUser();
     let receiver_id = computed(() => [props.receiverId]);
-    let temp1 = [];
+    let msgCount = ref();
     let chatListLoading = ref(true);
-
-    // onUpdated(() => {
-    //   chatblock.value.scrollTop = 0;
-    // });
 
     let filteredMessages = computed(() => {
       let uniqueData = [];
       let uniqueArray = [];
 
       messages.value.forEach((item) => {
+        let msgCount = getMsgCount(item.receiver_id);
         if (
           !(
             uniqueData.includes(`${item.sender_id}-${item.receiver_id}`) ||
             uniqueData.includes(`${item.receiver_id}-${item.sender_id}`)
           )
         ) {
-          uniqueArray.push(item);
+          uniqueArray.push({ ...item, msg_count: msgCount });
           uniqueData.push(`${item.sender_id}-${item.receiver_id}`);
         }
       });
       return uniqueArray;
     });
+
+    let getMsgCount = (id) => {
+      let count = 0;
+      messages.value.map((msg) => {
+        if (msg.receiver_id == id && msg.read_status == false) {
+          count++;
+        }
+        return count;
+      });
+      return count;
+    };
 
     let q = query(
       collection(db, "messages"),
@@ -104,6 +124,7 @@ export default {
     });
 
     let addNewChat = (e, message) => {
+      // updateMessageReadStatus(message.receiver_id);
       let obj = {
         id:
           message.receiver_id == user.value.uid
@@ -113,16 +134,30 @@ export default {
           message.receiver_id == user.value.uid
             ? message.sender_name
             : message.receiver_name,
-        photo_url: message.photo_url,
+        photo_url:
+          message.receiver_id == user.value.uid
+            ? message.sender_photo_url
+            : message.receiver_photo_url,
       };
       context.emit("addNewChat", obj);
     };
-    return { messages, addNewChat, filteredMessages, user, chatblock, receiver_id };
+    return {
+      messages,
+      addNewChat,
+      filteredMessages,
+      user,
+      chatblock,
+      receiver_id,
+    };
   },
 };
 </script>
 
 <style scoped>
+.noti {
+  width: 20px !important;
+  height: 20px !important;
+}
 img {
   width: 40px;
   height: 40px;
@@ -134,7 +169,7 @@ img {
   max-height: 70vh;
   overflow: hidden;
 }
-.chat-block:hover{
+.chat-block:hover {
   overflow: auto;
 }
 .user-chat {
@@ -144,12 +179,12 @@ img {
 }
 .user-chat:hover {
   cursor: pointer;
-  background: #081E40;
+  background: #081e40;
 }
 li {
   list-style-type: none;
 }
-.active{
-  background: #081E40;
+.active {
+  background: #081e40;
 }
 </style>
