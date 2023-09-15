@@ -1,20 +1,18 @@
 <template>
-  <div class="send-textbox">
-    <form class="custom-container">
-      <input
-        class="custom-input"
-        placeholder="text message and hit enter to send"
-        v-model="message"
-        @keypress.enter.prevent="handleSubmit"
-      />
-      <img
-        class="image pointer"
-        src="../../public/send.png"
-        alt=""
-        @click="handleSubmit"
-      />
-    </form>
-  </div>
+  <form class="custom-container">
+    <input
+      class="custom-input"
+      placeholder="text message and hit enter to send"
+      v-model="message"
+      @keypress.enter.prevent="handleSubmit"
+    />
+    <img
+      class="image pointer"
+      src="../../public/send.png"
+      alt=""
+      @click="handleSubmit"
+    />
+  </form>
 </template>
 
 <script>
@@ -83,10 +81,4 @@ form {
   width: 25px !important;
   height: 25px !important;
 }
-.send-textbox {
-  position: absolute;
-  bottom: 2px;
-  width: -webkit-fill-available;
-}
 </style>
-@/composables/getLoginUser

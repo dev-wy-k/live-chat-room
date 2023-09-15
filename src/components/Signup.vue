@@ -3,7 +3,7 @@
   <form @submit.prevent="signUp" class="mb-0">
     <input type="file" name="" id="file-upload" @change="fileUpload" hidden />
     <label for="file-upload">
-      <div class="flex justify-center">
+      <div class="flex justify-center mb-3">
         <div>
           <img
             v-if="previewImage"
@@ -15,7 +15,7 @@
             v-if="!previewImage"
             src="../../public/user.png"
             alt=""
-            class="pointer"
+            class="pointer profile"
           />
         </div>
       </div>
@@ -81,12 +81,10 @@ export default {
 };
 </script>
 
-<style scoped>
-img{
-  width: 100px;
-  height: 100px;
-}
+<style>
 .profile {
   border-radius: 50%;
+  width: 100px !important;
+  height: 100px !important;
 }
 </style>

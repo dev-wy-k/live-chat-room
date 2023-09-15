@@ -126,10 +126,11 @@ button:hover {
 }
 .modal-content {
   width: 400px;
-  max-height: 500px;
+  max-height: 520px;
   background: #141414;
   border-radius: 10px;
   padding: 10px 20px;
+  border: 1px solid #897474;
 }
 .single-user {
   border-bottom: 1px solid #656262;

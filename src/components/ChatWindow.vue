@@ -128,7 +128,7 @@ export default {
   margin-right: 6px;
 }
 .messages {
-  height: 80vh;
+  height: 75vh;
   overflow: auto;
 }
 .dateTextLeft {
